@@ -14,20 +14,16 @@ void set_event_name(struct Event_Global *e_global, char *file_path)
 {
 	FILE *file;
 	file = fopen(file_path,"w+");
-	//flock(file, LOCK_EX);
 	struct Event_Name *temp_name;
 	temp_name = e_global->e_name;
 	fprintf(file,"%s\n",temp_name->name);
 	fprintf(file,"%s\n",temp_name->date);
 	fprintf(file,"%s\n",temp_name->time);
-	flock(file, LOCK_UN);
-	//fclose(file); /*done!*/
 }
 void set_event_courses(struct Event_Global *e_global, char *file_path)
 {
 	FILE *file;
 	file = fopen(file_path,"w+");
-	//flock(file, LOCK_EX);
 	struct Event_Course *temp_course;
 	temp_course = e_global->e_first_courses;
 	while (temp_course != NULL )
@@ -46,14 +42,12 @@ void set_event_courses(struct Event_Global *e_global, char *file_path)
 		fprintf(file,"\n");
 		temp_course = temp_course->pre_course;
 	}
-	//flock(file, LOCK_UN);
 	fclose(file);
 }
 void set_event_entrants(struct Event_Global *e_global, char *file_path)
 {
 	FILE *file;
 	file = fopen(file_path,"w+");
-	//flock(file, LOCK_EX);
 	struct Event_Entrant *temp_entrant;
 	temp_entrant = e_global->e_first_entrants;
 	while (temp_entrant != NULL )
@@ -61,6 +55,5 @@ void set_event_entrants(struct Event_Global *e_global, char *file_path)
 		fprintf(file,"%i %c %s\n",temp_entrant->comp_num, temp_entrant->course,temp_entrant->name);
 		temp_entrant = temp_entrant->pre_entrant;
 	}
-	//flock(file, LOCK_UN);
 	fclose(file);
 }
