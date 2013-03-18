@@ -11,7 +11,13 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
+//Structs to hold the data from each events
+/*
+ * Changes from origernal design, 
+ * Made all structs doubly linked,
+ * Cut Down on duplicate declerations
+ * Added global Structure to hold the information rather than passing arround each indervidual structure 
+ */
     struct Event_Name
     {
        char name[80], date[80], time[80];

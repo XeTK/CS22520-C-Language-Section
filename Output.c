@@ -7,15 +7,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Output.h"
-
+//Simple Debug class to print out the infor from are structs
 void print_event_name(struct Event_Global *e_global)
 {
+	//load the values from the global struct into a temporay
 	struct Event_Name *temp_name;
 	temp_name = e_global->e_name;
+	//Print each value from the constructor
 	printf("Event Name : %s \n",temp_name->name);
 	printf("Event Date : %s \n",temp_name->date);
 	printf("Event Time : %s \n",temp_name->time);
 }
+//same again just for nodes
 void print_event_nodes(struct Event_Global *e_global)
 {
 	struct Event_Node *temp_node;
@@ -26,6 +29,7 @@ void print_event_nodes(struct Event_Global *e_global)
 		temp_node = temp_node->pre_node;
 	}
 }
+//same again we just print out the tracks this time
 void print_event_tracks(struct Event_Global *e_global)
 {
 	struct Event_Track *temp_track;
@@ -36,6 +40,7 @@ void print_event_tracks(struct Event_Global *e_global)
 		temp_track = temp_track->pre_track;
 	}
 }
+//^^
 void print_event_courses(struct Event_Global *e_global)
 {
 	struct Event_Course *temp_course;

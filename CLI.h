@@ -11,7 +11,7 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-    
+//Fuction Prototypes for the Fuctions that will be used within the CLI.c Class    
     void run_program(struct Event_Global *e_global);
     void print_menu();
     void add_courses(struct Event_Global *e_global);
