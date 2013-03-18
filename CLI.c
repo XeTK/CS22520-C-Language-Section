@@ -15,7 +15,7 @@
 #include "FileReader.h"
 #include "FileWriter.h"
 
-struct flock* filelock(short type, short whence)
+struct flock* l_file_lock(short type, short whence)
 {
 		static struct flock ret;
 		ret.l_type = type;
@@ -28,6 +28,11 @@ struct flock* filelock(short type, short whence)
 
 void run_program(struct Event_Global *e_global)
 {
+    (l_lock_file("data/name.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
+    (l_lock_file("data/nodes.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
+    (l_lock_file("data/tracks.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
+    (l_lock_file("data/courses.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
+    (l_lock_file("data/entrants.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     int cont = 1;
     while(1)
     {
@@ -55,7 +60,7 @@ void run_program(struct Event_Global *e_global)
             	print_structs(e_global);
             	break;
             case 7:
-                printf("Goodbye!");
+                printf("Goodbye!\n");
                 cont = 0;
                 break;
             default:
@@ -65,6 +70,11 @@ void run_program(struct Event_Global *e_global)
         if (cont != 1)
             break;
     }
+    (l_unlock_file("data/name.txt") == -1)?printf("Failed to unlock\n"):printf("Locked File\n");
+    (l_unlock_file("data/nodes.txt") == -1)?printf("Failed to unlock\n"):printf("Locked File\n");
+    (l_unlock_file("data/tracks.txt") == -1)?printf("Failed to unlock\n"):printf("Locked File\n");
+    (l_unlock_file("data/courses.txt") == -1)?printf("Failed to unlock\n"):printf("Locked File\n");
+    (l_unlock_file("data/entrants.txt") == -1)?printf("Failed to unlock\n"):printf("Locked File\n");
 }
 
 void print_menu()
@@ -169,15 +179,10 @@ void add_name(struct Event_Global *e_global)
 
 void load_files(struct Event_Global *e_global) 
 {
-	(lock_file("data/name.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_name(e_global,"data/name.txt");
-    (lock_file("data/nodes.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_nodes(e_global,"data/nodes.txt");
-    (lock_file("data/tracks.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_tracks(e_global,"data/tracks.txt");
-    (lock_file("data/courses.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_courses(e_global,"data/courses.txt");
-    (lock_file("data/entrants.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_entrants(e_global,"data/entrants.txt");
 }
 
@@ -195,11 +200,11 @@ void print_structs(struct Event_Global *e_global)
 	print_event_courses(e_global);
 	print_event_entrants(e_global);
 }
-int lock_file(char *path)
+int l_lock_file(char *path)
 {
-	return fcntl(open(path, O_RDWR), F_SETLK, file_lock(F_WRLCK, SEEK_SET));
+	return fcntl(open(path, O_RDWR), F_SETLK, l_file_lock(F_WRLCK, SEEK_SET));
 }
-int unlock_file(char *path)
+int l_unlock_file(char *path)
 {
-	return fcntl(open(path, O_RDWR), F_SETLKW, file_lock(F_UNLCK, SEEK_SET));
+	return fcntl(open(path, O_RDWR), F_SETLKW, l_file_lock(F_UNLCK, SEEK_SET));
 }
