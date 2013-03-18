@@ -172,3 +172,4 @@ void get_event_entrants(struct Event_Global *e_global, char *file_path)
     file = NULL;
     temp = NULL;
 }
+

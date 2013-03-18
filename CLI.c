@@ -6,10 +6,25 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+
 #include "CLI.h"
 #include "Output.h"
 #include "FileReader.h"
 #include "FileWriter.h"
+
+struct flock* filelock(short type, short whence)
+{
+		static struct flock ret;
+		ret.l_type = type;
+		ret.l_start = 0;
+		ret.l_whence = whence;
+		ret.l_len = 0;
+		ret.l_pid = getpid();
+		return &ret;
+};
 
 void run_program(struct Event_Global *e_global)
 {
@@ -154,10 +169,15 @@ void add_name(struct Event_Global *e_global)
 
 void load_files(struct Event_Global *e_global) 
 {
+	(lock_file("data/name.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_name(e_global,"data/name.txt");
+    (lock_file("data/nodes.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_nodes(e_global,"data/nodes.txt");
+    (lock_file("data/tracks.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_tracks(e_global,"data/tracks.txt");
+    (lock_file("data/courses.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_courses(e_global,"data/courses.txt");
+    (lock_file("data/entrants.txt") == -1)?printf("Failed to lock\n"):printf("Locked File\n");
     get_event_entrants(e_global,"data/entrants.txt");
 }
 
@@ -174,4 +194,12 @@ void print_structs(struct Event_Global *e_global)
 	print_event_tracks(e_global);
 	print_event_courses(e_global);
 	print_event_entrants(e_global);
+}
+int lock_file(char *path)
+{
+	return fcntl(open(path, O_RDWR), F_SETLK, file_lock(F_WRLCK, SEEK_SET));
+}
+int unlock_file(char *path)
+{
+	return fcntl(open(path, O_RDWR), F_SETLKW, file_lock(F_UNLCK, SEEK_SET));
 }

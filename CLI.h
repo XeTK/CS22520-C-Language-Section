@@ -20,6 +20,8 @@ extern "C" {
     void load_files(struct Event_Global *e_global);
     void save_files(struct Event_Global *e_global);
     void print_structs(struct Event_Global *e_global);
+    int lock_file(char *path);
+    int unlock_file(char *path);
 
 #ifdef	__cplusplus
 }
